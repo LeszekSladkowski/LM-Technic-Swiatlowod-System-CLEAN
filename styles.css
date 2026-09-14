@@ -28,6 +28,12 @@ body {
   overflow: hidden;
 }
 
+/*
+  JEDYNY UKŁAD WSPÓŁRZĘDNYCH APLIKACJI
+  Punkt odniesienia: X=0, Y=0 = lewy górny róg MASTER-a.
+  Każda przyszła warstwa musi mieć dokładnie 1440×3120 px
+  i trafiać w te same współrzędne bez osobnego skalowania/przesuwania.
+*/
 #design-stage {
   position: absolute;
   left: 50%;
@@ -43,22 +49,28 @@ body {
 
 .layer {
   position: absolute;
-  inset: 0;
-  display: block;
+  left: 0;
+  top: 0;
   width: 1440px;
   height: 3120px;
+  display: block;
   margin: 0;
   padding: 0;
-  object-fit: fill;
+  object-fit: none;
   object-position: 0 0;
+  transform: none;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.master-reference {
+  z-index: 1;
   pointer-events: none;
 }
 
-.layer-text { z-index: 10; }
-.layer-devices { z-index: 20; }
-.layer-ui { z-index: 30; }
+.layer[data-geometry="invalid"] {
+  display: none !important;
+}
 
 @media (display-mode: standalone) {
   html, body, #viewport {
