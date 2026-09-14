@@ -1,13 +1,11 @@
-const CACHE_NAME = 'lm-technic-swiatlowod-layer-test-v1';
+const CACHE_NAME = 'lm-technic-swiatlowod-geometry-lock-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
   './manifest.webmanifest',
-  './01_TLO_MASTER/file_000000004d58820a9934e2922ddfe8f9.png',
-  './02_MEDIA_URZADZENIA/file_00000000ae4c81f4918eaa88f349d772.png',
-  './03_RAMKI_IKONY_UI/file_000000003b8c821098315f883ad0a33b.png',
+  './04_MASTER_REFERENCJA/01_MASTER_MENU_GLOWNE_PANEL_STEROWANIA.png',
   './03_RAMKI_IKONY_UI/00_MASTER_IKONA_GLOWNA_LM_TECHNIC_SWIATLOWOD_SYSTEM.png'
 ];
 
@@ -27,6 +25,20 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request))
   );
