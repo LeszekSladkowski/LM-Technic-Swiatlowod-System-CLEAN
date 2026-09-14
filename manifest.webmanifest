@@ -1,0 +1,19 @@
+{
+  "name": "LM-Technic-Światłowód-system",
+  "short_name": "LM-Technic",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "03_RAMKI_IKONY_UI/00_MASTER_IKONA_GLOWNA_LM_TECHNIC_SWIATLOWOD_SYSTEM.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
