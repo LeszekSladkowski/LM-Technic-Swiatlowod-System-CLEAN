@@ -28,12 +28,7 @@ body {
   overflow: hidden;
 }
 
-/*
-  JEDYNY UKŁAD WSPÓŁRZĘDNYCH APLIKACJI
-  Punkt odniesienia: X=0, Y=0 = lewy górny róg MASTER-a.
-  Każda przyszła warstwa musi mieć dokładnie 1440×3120 px
-  i trafiać w te same współrzędne bez osobnego skalowania/przesuwania.
-*/
+/* JEDYNY UKŁAD WSPÓŁRZĘDNYCH: X=0, Y=0 = lewy górny róg 1440×3120. */
 #design-stage {
   position: absolute;
   left: 50%;
@@ -47,6 +42,19 @@ body {
   contain: strict;
 }
 
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 1440px;
+  height: 3120px;
+  display: none;
+  background: #000;
+}
+
+.screen.is-active {
+  display: block;
+}
+
 .layer {
   position: absolute;
   left: 0;
@@ -56,20 +64,121 @@ body {
   display: block;
   margin: 0;
   padding: 0;
-  object-fit: none;
   object-position: 0 0;
   transform: none;
   user-select: none;
   -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .master-reference {
   z-index: 1;
-  pointer-events: none;
+  object-fit: none;
 }
 
-.layer[data-geometry="invalid"] {
-  display: none !important;
+/*
+  Warstwy USTAWIEŃ pochodzą z jednego zestawu o identycznej proporcji 6:13.
+  Są mapowane na wspólne płótno 1440×3120 bez osobnych przesunięć.
+*/
+.settings-layer,
+.settings-fallback {
+  object-fit: fill;
+}
+
+.settings-bg { z-index: 10; }
+.settings-icons { z-index: 20; }
+.settings-text { z-index: 30; }
+
+.settings-fallback {
+  z-index: 5;
+  display: none;
+}
+
+#screen-settings.use-fallback .settings-layer {
+  display: none;
+}
+
+#screen-settings.use-fallback .settings-fallback {
+  display: block;
+}
+
+.hotspot {
+  position: absolute;
+  z-index: 100;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.hotspot:focus-visible {
+  outline: 4px solid rgba(255, 215, 0, 0.75);
+  outline-offset: -4px;
+}
+
+/* PULPIT MASTER — kafel USTAWIENIA, trzeci rząd / prawa kolumna. */
+#open-settings {
+  left: 914px;
+  top: 1900px;
+  width: 400px;
+  height: 555px;
+}
+
+/* USTAWIENIA — mapa X/Y zatwierdzonego układu 1440×3120. */
+#settings-back {
+  left: 64px;
+  top: 138px;
+  width: 180px;
+  height: 180px;
+}
+
+#settings-sync {
+  left: 1196px;
+  top: 138px;
+  width: 180px;
+  height: 180px;
+}
+
+#settings-card-1 {
+  left: 64px;
+  top: 1158px;
+  width: 1312px;
+  height: 180px;
+}
+
+#settings-card-2 {
+  left: 64px;
+  top: 1366px;
+  width: 1312px;
+  height: 180px;
+}
+
+#settings-card-3 {
+  left: 64px;
+  top: 1574px;
+  width: 1312px;
+  height: 180px;
+}
+
+#settings-card-4 {
+  left: 64px;
+  top: 1782px;
+  width: 1312px;
+  height: 180px;
+}
+
+#settings-home {
+  left: 64px;
+  top: 2830px;
+  width: 1312px;
+  height: 218px;
 }
 
 @media (display-mode: standalone) {
