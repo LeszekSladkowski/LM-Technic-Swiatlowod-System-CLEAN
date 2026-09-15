@@ -1,7 +1,6 @@
 (() => {
   const DESIGN_W = 1440;
   const DESIGN_H = 3120;
-  const DESIGN_RATIO = DESIGN_W / DESIGN_H;
   const stage = document.getElementById('design-stage');
   const homeScreen = document.getElementById('screen-home');
   const settingsScreen = document.getElementById('screen-settings');
@@ -25,33 +24,37 @@
     }
   }
 
+  function hasExactGeometry(img) {
+    return img.naturalWidth === DESIGN_W && img.naturalHeight === DESIGN_H;
+  }
+
   function validateHomeMaster(img) {
-    const valid = img.naturalWidth === DESIGN_W && img.naturalHeight === DESIGN_H;
-    img.dataset.geometry = valid ? 'valid' : 'invalid';
+    const valid = hasExactGeometry(img);
+    img.dataset.geometry = valid ? '1440x3120@0,0' : 'invalid';
     if (!valid) {
-      console.error(`[GEOMETRY LOCK] MASTER Pulpitu ma ${img.naturalWidth}x${img.naturalHeight}, wymagane ${DESIGN_W}x${DESIGN_H}.`);
+      console.error(`[GEOMETRY LOCK] MASTER Pulpitu: ${img.naturalWidth}x${img.naturalHeight}; wymagane ${DESIGN_W}x${DESIGN_H}.`);
     }
     return valid;
   }
 
   function validateSettingsSet() {
     const layers = [...document.querySelectorAll('.settings-layer')];
-    let valid = true;
+    const invalid = layers.filter((img) => !hasExactGeometry(img));
 
     for (const img of layers) {
-      if (!img.naturalWidth || !img.naturalHeight) {
-        valid = false;
-        continue;
+      const valid = hasExactGeometry(img);
+      img.dataset.geometry = valid ? '1440x3120@0,0' : 'invalid';
+      if (!valid) {
+        console.error(
+          `[GEOMETRY LOCK] Odrzucono warstwę USTAWIEŃ: ${img.src}. ` +
+          `Ma ${img.naturalWidth}x${img.naturalHeight}; wymagane dokładnie ${DESIGN_W}x${DESIGN_H}.`
+        );
       }
-
-      const ratio = img.naturalWidth / img.naturalHeight;
-      const ratioOk = Math.abs(ratio - DESIGN_RATIO) < 0.001;
-      img.dataset.geometry = ratioOk ? 'mapped-0-0' : 'invalid';
-      if (!ratioOk) valid = false;
     }
 
+    const valid = invalid.length === 0;
     settingsScreen.classList.toggle('use-fallback', !valid);
-    document.documentElement.dataset.settingsLayers = valid ? 'ready' : 'fallback';
+    document.documentElement.dataset.settingsLayers = valid ? 'exact-0-0' : 'fallback-master';
     return valid;
   }
 
@@ -69,8 +72,13 @@
 
   const homeMaster = document.querySelector('#screen-home .master-reference');
   const settingsLayers = [...document.querySelectorAll('.settings-layer')];
+  const settingsFallback = document.getElementById('settings-fallback');
 
-  Promise.all([waitForImage(homeMaster), ...settingsLayers.map(waitForImage)])
+  Promise.all([
+    waitForImage(homeMaster),
+    waitForImage(settingsFallback),
+    ...settingsLayers.map(waitForImage)
+  ])
     .then(() => {
       validateHomeMaster(homeMaster);
       validateSettingsSet();
@@ -81,7 +89,7 @@
     .catch((error) => {
       console.error(error);
       settingsScreen.classList.add('use-fallback');
-      document.documentElement.dataset.settingsLayers = 'fallback';
+      document.documentElement.dataset.settingsLayers = 'fallback-master';
     });
 
   document.getElementById('open-settings').addEventListener('click', () => showScreen('settings'));
