@@ -31,7 +31,6 @@ body {
 /*
   JEDYNY UKŁAD WSPÓŁRZĘDNYCH:
   X=0, Y=0 = lewy górny róg płótna 1440×3120.
-  Żadna warstwa nie może mieć własnego skalowania ani przesunięcia.
 */
 #design-stage {
   position: absolute;
@@ -70,7 +69,6 @@ body {
   display: block;
   margin: 0;
   padding: 0;
-  object-fit: none;
   object-position: 0 0;
   transform: none;
   user-select: none;
@@ -78,14 +76,28 @@ body {
   pointer-events: none;
 }
 
-.master-reference,
-.settings-layer,
-.settings-fallback {
+/* Pulpit ma już natywny MASTER 1440×3120 — bez skalowania treści wewnątrz. */
+.master-reference {
+  z-index: 1;
   object-fit: none;
   object-position: 0 0;
 }
 
-.master-reference { z-index: 1; }
+/*
+  Warstwy USTAWIEŃ i fallback są źródłami o tej samej proporcji 6:13,
+  ale nie wszystkie mają natywne 1440×3120. Dlatego ich obraz jest mapowany
+  na całe płótno 1440×3120 od tego samego punktu X=0 / Y=0.
+*/
+.settings-layer,
+.settings-fallback {
+  width: 1440px;
+  height: 3120px;
+  object-fit: fill;
+  object-position: 0 0;
+  transform: none;
+  transform-origin: 0 0;
+}
+
 .settings-bg { z-index: 10; }
 .settings-icons { z-index: 20; }
 .settings-text { z-index: 30; }
