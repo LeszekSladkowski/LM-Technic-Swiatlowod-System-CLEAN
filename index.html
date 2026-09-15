@@ -14,12 +14,53 @@
 <body>
   <main id="viewport" aria-label="LM-Technic-Światłowód-system">
     <section id="design-stage" aria-label="Panel sterowania" data-design-width="1440" data-design-height="3120">
-      <img
-        class="layer master-reference"
-        src="04_MASTER_REFERENCJA/01_MASTER_MENU_GLOWNE_PANEL_STEROWANIA.png"
-        alt="LM-Technic-Światłowód-system — panel sterowania"
-        draggable="false"
-      />
+
+      <section id="screen-home" class="screen is-active" aria-label="Pulpit główny">
+        <img
+          class="layer master-reference"
+          src="04_MASTER_REFERENCJA/01_MASTER_MENU_GLOWNE_PANEL_STEROWANIA.png"
+          alt="LM-Technic-Światłowód-system — panel sterowania"
+          draggable="false"
+        />
+        <button id="open-settings" class="hotspot" aria-label="Otwórz ustawienia"></button>
+      </section>
+
+      <section id="screen-settings" class="screen" aria-label="Ustawienia">
+        <img
+          class="layer settings-layer settings-bg"
+          src="01_TLO_MASTER/file_00000000c2d48243933d59ddcac018bb.png"
+          alt=""
+          draggable="false"
+        />
+        <img
+          class="layer settings-layer settings-icons"
+          src="02_MEDIA_URZADZENIA/file_00000000d4d882439386825effb50188.png"
+          alt=""
+          draggable="false"
+        />
+        <img
+          class="layer settings-layer settings-text"
+          src="03_RAMKI_IKONY_UI/file_000000008024821096fcb2a1203368d6.png"
+          alt="Ustawienia systemu"
+          draggable="false"
+        />
+        <img
+          id="settings-fallback"
+          class="layer settings-fallback"
+          src="04_MASTER_REFERENCJA/file_00000000b26481f49d957400d3301b15.png"
+          alt="Ustawienia systemu — wzorzec MASTER"
+          draggable="false"
+        />
+
+        <button id="settings-back" class="hotspot" aria-label="Wróć"></button>
+        <button id="settings-sync" class="hotspot" aria-label="Synchronizuj"></button>
+        <button id="settings-card-1" class="hotspot" aria-label="Karta 1 — Aktualizacja aplikacji"></button>
+        <button id="settings-card-2" class="hotspot" aria-label="Karta 2 — Informacje o systemie"></button>
+        <button id="settings-card-3" class="hotspot" aria-label="Karta 3 — Magazyn backupów"></button>
+        <button id="settings-card-4" class="hotspot" aria-label="Karta 4 — Wyślij do / otwórz menu"></button>
+        <button id="settings-home" class="hotspot" aria-label="Pulpit"></button>
+      </section>
+
     </section>
   </main>
   <script src="app.js" defer></script>
