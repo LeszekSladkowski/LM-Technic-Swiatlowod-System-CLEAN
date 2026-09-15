@@ -28,7 +28,11 @@ body {
   overflow: hidden;
 }
 
-/* JEDYNY UKŁAD WSPÓŁRZĘDNYCH: X=0, Y=0 = lewy górny róg 1440×3120. */
+/*
+  JEDYNY UKŁAD WSPÓŁRZĘDNYCH:
+  X=0, Y=0 = lewy górny róg płótna 1440×3120.
+  Żadna warstwa nie może mieć własnego skalowania ani przesunięcia.
+*/
 #design-stage {
   position: absolute;
   left: 50%;
@@ -44,11 +48,13 @@ body {
 
 .screen {
   position: absolute;
-  inset: 0;
+  left: 0;
+  top: 0;
   width: 1440px;
   height: 3120px;
   display: none;
   background: #000;
+  overflow: hidden;
 }
 
 .screen.is-active {
@@ -64,6 +70,7 @@ body {
   display: block;
   margin: 0;
   padding: 0;
+  object-fit: none;
   object-position: 0 0;
   transform: none;
   user-select: none;
@@ -71,20 +78,14 @@ body {
   pointer-events: none;
 }
 
-.master-reference {
-  z-index: 1;
-  object-fit: none;
-}
-
-/*
-  Warstwy USTAWIEŃ pochodzą z jednego zestawu o identycznej proporcji 6:13.
-  Są mapowane na wspólne płótno 1440×3120 bez osobnych przesunięć.
-*/
+.master-reference,
 .settings-layer,
 .settings-fallback {
-  object-fit: fill;
+  object-fit: none;
+  object-position: 0 0;
 }
 
+.master-reference { z-index: 1; }
 .settings-bg { z-index: 10; }
 .settings-icons { z-index: 20; }
 .settings-text { z-index: 30; }
@@ -95,7 +96,7 @@ body {
 }
 
 #screen-settings.use-fallback .settings-layer {
-  display: none;
+  display: none !important;
 }
 
 #screen-settings.use-fallback .settings-fallback {
@@ -123,7 +124,7 @@ body {
   outline-offset: -4px;
 }
 
-/* PULPIT MASTER — kafel USTAWIENIA, trzeci rząd / prawa kolumna. */
+/* PULPIT MASTER — kafel USTAWIENIA. */
 #open-settings {
   left: 914px;
   top: 1900px;
@@ -131,7 +132,7 @@ body {
   height: 555px;
 }
 
-/* USTAWIENIA — mapa X/Y zatwierdzonego układu 1440×3120. */
+/* USTAWIENIA — mapa 1440×3120 liczona wyłącznie od X=0, Y=0. */
 #settings-back {
   left: 64px;
   top: 138px;
