@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lm-technic-swiatlowod-settings-v5-fit-xy';
+const CACHE_NAME = 'lm-technic-swiatlowod-settings-v6-fullscreen';
 const ASSETS = [
   './',
   './index.html',
